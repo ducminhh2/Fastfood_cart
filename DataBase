@@ -1,0 +1,89 @@
+CREATE DATABASE duancanhan;
+USE duancanhan;
+
+CREATE TABLE Users(
+	[user_id] INT IDENTITY(1,1) PRIMARY KEY,
+	name NVARCHAR(50),
+	email NVARCHAR(50),
+	username NVARCHAR(50),
+	password NVARCHAR(50),
+	sdt nvarchar(10),
+	role NVARCHAR(20)
+);
+
+CREATE TABLE danhsachsanpham(
+	dssp_id INT IDENTITY(1,1) PRIMARY KEY,
+	ten_ds NVARCHAR(50)
+);
+
+CREATE TABLE sanpham(
+	sanpham_id INT IDENTITY(1,1) PRIMARY KEY,
+	dssp_id INT NOT NULL,
+	anh_sp VARBINARY(MAX),
+	ten_sp NVARCHAR(50),
+	FOREIGN KEY (dssp_id) REFERENCES danhsachsanpham(dssp_id)
+);
+
+CREATE TABLE sanphamchitiet(
+	spct_id INT IDENTITY(1,1) PRIMARY KEY,
+	sanpham_id INT NOT NULL,
+	gia MONEY,
+	mo_ta NVARCHAR(50),
+	FOREIGN KEY (sanpham_id) REFERENCES sanpham(sanpham_id)
+);
+
+CREATE TABLE hoadon(
+	hd_id INT IDENTITY(1,1) PRIMARY KEY,
+	[user_id] INT,
+	ngay_tao Date,
+	FOREIGN KEY ([user_id]) REFERENCES Users([user_id])
+);
+
+CREATE TABLE hoadonchitiet(
+	hdct_id INT IDENTITY(1,1) PRIMARY KEY,
+	hd_id INT NOT NULL,
+	spct_id INT NOT NULL,
+	so_luong INT,
+	gia MONEY,
+	thanh_tien MONEY,
+	trang_thai NVARCHAR(50),
+	FOREIGN KEY (hd_id) REFERENCES hoadon(hd_id),
+	FOREIGN KEY (spct_id) REFERENCES sanphamchitiet(spct_id)
+);
+insert into Users(email,username,password,role) values
+('Duc@gmail.com','duc','123123','Admin')
+
+INSERT INTO danhsachsanpham (ten_ds)
+VALUES ('Hamburger'), ('Pizza'), ('French Fries'), ('Chicken Nuggets'), ('Soft Drink');
+
+INSERT INTO sanpham (dssp_id, anh_sp, ten_sp)
+VALUES (1, 0x, N'Hamburger');
+
+INSERT INTO sanpham (dssp_id, anh_sp, ten_sp)
+VALUES (2, 0x, N'Pizza');
+
+INSERT INTO sanpham (dssp_id, anh_sp, ten_sp)
+VALUES (3, 0x, N'French Fries');
+
+INSERT INTO sanpham (dssp_id, anh_sp, ten_sp)
+VALUES (4, 0x, N'Chicken Nuggets');
+
+INSERT INTO sanpham (dssp_id, anh_sp, ten_sp)
+VALUES (5, 0x, N'Soft Drink');
+
+INSERT INTO sanphamchitiet (sanpham_id, gia, mo_ta)
+VALUES (1, 50000, N'Best hamburger in town');
+
+INSERT INTO sanphamchitiet (sanpham_id, gia, mo_ta)
+VALUES (2, 70000, N'Authentic Italian pizza');
+
+INSERT INTO sanphamchitiet (sanpham_id, gia, mo_ta)
+VALUES (3, 25000, N'Crunchy and tasty fries');
+
+INSERT INTO sanphamchitiet (sanpham_id, gia, mo_ta)
+VALUES (4, 35000, N'Tender chicken nuggets');
+
+INSERT INTO sanphamchitiet (sanpham_id, gia, mo_ta)
+VALUES (5, 15000, N'Refreshing soft drink');
+
+
